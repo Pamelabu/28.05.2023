@@ -19,13 +19,9 @@ time.sleep(3)
 
 nazwy_produktow = driver.find_elements(By.CLASS_NAME, 'woocommerce-loop-product__title')
 
-# for produkt in nazwy_produktow:
-#     print(produkt.text)
-
 nazwy_oczyszczone = []
 for produkt in nazwy_produktow:
     nazwy_oczyszczone.append(produkt.text)
-    # print(nazwy_oczyszczone)
 time.sleep(5)
 ceny_produktow = driver.find_elements(By.CLASS_NAME, 'price')
 ceny_oczyszczone = []
@@ -38,9 +34,6 @@ for ceny in ceny_produktow:
     ceny_oczyszczone.append(ceny_w_poprawnym_formacie)
     print(ceny_oczyszczone)
 
-    #129.50 dobre
-    #129,5 złe python ogarnai kropkę nie przecinek
-
 
 artykuly = {'names':nazwy_oczyszczone, 'prices':ceny_oczyszczone}
 df_produkty = pd.DataFrame(artykuly)
@@ -52,11 +45,8 @@ df_produkty.loc[df_produkty['prices'] < 25, 'Status'] = 'Zainteresuj sie'
 
 df_produkty.loc[(df_produkty['prices'] > 25) & (df_produkty['prices'] < 50), 'Status'] = 'Zaczekaj'
 
-#loc wybiera wiersze które spełniają warunek 
-
 print(df_produkty.head())
 
-#laczenie z bazą danych sqlite
 
 conn = sqlite3.connect('artykuly.sqlite')
 
