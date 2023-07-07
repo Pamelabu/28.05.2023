@@ -23,9 +23,9 @@ nazwy_oczyszczone = []
 for produkt in nazwy_produktow:
     nazwy_oczyszczone.append(produkt.text)
 time.sleep(5)
+
 ceny_produktow = driver.find_elements(By.CLASS_NAME, 'price')
 ceny_oczyszczone = []
-
 
 for ceny in ceny_produktow:
     ceny_bez_waluty = ceny.text.lstrip('€')
@@ -34,10 +34,8 @@ for ceny in ceny_produktow:
     ceny_oczyszczone.append(ceny_w_poprawnym_formacie)
     print(ceny_oczyszczone)
 
-
 artykuly = {'names':nazwy_oczyszczone, 'prices':ceny_oczyszczone}
 df_produkty = pd.DataFrame(artykuly)
-print(df_produkty.head())
 
 df_produkty['Status'] = 'Zapomnij'
 
@@ -47,11 +45,9 @@ df_produkty.loc[(df_produkty['prices'] > 25) & (df_produkty['prices'] < 50), 'St
 
 print(df_produkty.head())
 
-
 conn = sqlite3.connect('artykuly.sqlite')
 
 df_produkty.to_sql('TabelaArtykulow', conn, if_exists='append', index=False) #zapisanie ramkki danych do tabeli w bazie danych
 conn.close()
-
 
 driver.quit()
